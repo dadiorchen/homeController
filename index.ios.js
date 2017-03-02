@@ -13,7 +13,9 @@ import {
   Modal,
   TouchableHighlight,
   NativeModules,
-  View
+  View,
+  Image,
+  Alert,
 } from 'react-native';
 
 export default class HomeController extends Component {
@@ -50,6 +52,10 @@ export default class HomeController extends Component {
 			startupConfirmModalVisible : false,
 			shutdownConfirmModalVisible:false,
 		});
+		setTimeout(this.updateStatus,1000);
+	}
+	
+	updateStatus = () =>{
 		//test ping
 		let thisObj = this;
 		fetch("http://192.168.31.178:8888").then(function(res){
@@ -146,8 +152,8 @@ export default class HomeController extends Component {
 		this.setState({startupConfirmModalVisible:false});
 	}
 
-	render() {
-		return (
+
+	temp =				{/*
 				<View style={styles.container}>
 					<Modal
 						animationType={"slide"}
@@ -217,6 +223,298 @@ export default class HomeController extends Component {
 						title="刷新"
 					/>
 				</View>
+				*/}
+	render() {
+		return (
+			<Image source={require('./img/background1.png')} style={{
+				flex:1,
+				width:null,
+				resizeMode:'stretch',
+				
+				}}>
+				<View style={{
+					flex:1,
+					flexDirection:'column',
+					alignItems:'stretch',
+					justifyContent:'center',
+					backgroundColor: 'rgba(0,0,0,0)',
+					flexGrow:1,
+					}} >
+					<View style={{flex:40,
+							backgroundColor:'white',
+					}} >
+						<Text></Text>
+					</View>
+					<View style={{
+						flex:242,
+						justifyContent:'center',
+						alignItems:'center',
+						}} >
+						<Image source={require('./img/title.png')} style={{
+							width:128,
+							height:38,
+						}} />
+					</View>
+					<View 
+						style={{
+							flex:53,
+							flexDirection:'row',
+							borderTopWidth:2,
+							borderBottomWidth:2,
+							borderColor:'#e3e3e3',
+							backgroundColor:'#f0f0f0',
+							justifyContent:'space-between'
+						}} >
+						<View style={{flex:1,flexDirection:'row',justifyContent:'space-between',alignItems:'center'}}>
+						<Image source={require('./img/homeServer.png')}
+							style={{
+								marginLeft:24,
+								width:80,
+								height:10,
+							}}/>
+						<Image
+							source={this.state.isHomeServerRunning?require('./img/runningStatus.png'):require('./img/stopStatus.png')}
+							style={{
+								marginRight:25,
+								width:12,
+								height:12,
+								}} />
+						</View>
+					</View>
+					<View style={{
+						flex:170,
+						justifyContent:'center',
+						alignItems:'flex-end',
+						flexDirection:'row',
+						}} >
+						<TouchableHighlight 
+						onPress={() => Alert.alert(
+								'确定要开机吗？',
+								'',
+								[
+								{text: '放弃', onPress: () => console.log('Cancel Pressed!')},
+								{text: '确定', onPress: () => this.onStartup()},
+								]
+								)}>
+								<Image 
+									source={require('./img/btnON.png')}
+									style={{
+										width:24,
+										height:24,
+										marginRight:14,
+										marginBottom:25,
+									}}
+								/>
+							</TouchableHighlight>
+						<Image 
+							source={require('./img/robot.png')}
+							style={{
+								width:150,
+								height:77,
+							}}
+						/>
+						<TouchableHighlight 
+						onPress={() => Alert.alert(
+								'确定要关机吗？',
+								'',
+								[
+								{text: '放弃', onPress: () => console.log('Cancel Pressed!')},
+								{text: '确定', onPress: () => this.onShutdown()},
+								]
+								)}>
+						<Image 
+							source={require('./img/btnOFF.png')}
+							style={{
+								width:23,
+								height:23,
+								marginLeft:14,
+								marginBottom:25,
+							}}
+						/>
+						</TouchableHighlight>
+					</View>
+					<View style={{
+						flex:370*2,
+						flexDirection:'column',
+						flexWrap:'wrap',
+						justifyContent:'center',
+						}} >
+						<View
+							style={{
+								flex:1,
+								flexDirection:'row',
+								}}>
+							<View
+								style={{
+									flex:1,
+									borderTopWidth:1,
+									borderRightWidth:0.5,
+									borderBottomWidth:0.5,
+									borderColor:'#e3e3e3',
+									justifyContent:'center',
+									alignItems:'center',
+								}}>
+								<Image
+									source={require('./img/facebookLogo.png')}
+									style={{
+										width:46,
+										height:46,
+										margin:5,
+									}}
+								/>
+								<Text
+									style={{
+										color:'#6e6d68',
+										fontSize:12,
+										margin:5,
+									}}>Facebook</Text>
+								<Image
+									source={this.state.isFacebookReachable?require('./img/runningStatus.png'):require('./img/stopStatus.png')}
+									style={{
+										marginRight:25,
+										width:12,
+										height:12,
+										top:-12,
+										left:-34,
+										}} />
+							</View>
+							<View
+								style={{
+									flex:1,
+									borderTopWidth:1,
+									borderLeftWidth:0.5,
+									borderBottomWidth:0.5,
+									borderColor:'#e3e3e3',
+									justifyContent:'center',
+									alignItems:'center',
+								}}>
+								<Image
+									source={require('./img/googleLogo.png')}
+									style={{
+										width:46,
+										height:46,
+										margin:5,
+									}}
+								/>
+								<Text
+									style={{
+										color:'#6e6d68',
+										fontSize:12,
+										margin:5,
+									}}>Google</Text>
+								<Image
+									source={this.state.isGoogleReachable?require('./img/runningStatus.png'):require('./img/stopStatus.png')}
+									style={{
+										marginRight:25,
+										width:12,
+										height:12,
+										top:-12,
+										left:-34,
+										}} />
+							</View>
+						</View>
+						<View
+							style={{
+								flex:1,
+								flexDirection:'row',
+								}}>
+							<View
+								style={{
+									flex:1,
+									borderTopWidth:0.5,
+									borderRightWidth:0.5,
+									borderBottomWidth:1,
+									borderColor:'#e3e3e3',
+									justifyContent:'center',
+									alignItems:'center',
+								}}>
+								<Image
+									source={require('./img/twLogo.png')}
+									style={{
+										width:46,
+										height:46,
+										margin:5,
+									}}
+								/>
+								<Text
+									style={{
+										color:'#6e6d68',
+										fontSize:12,
+										margin:5,
+									}}>Twitter</Text>
+								<Image
+									source={this.state.isTwitterReachable?require('./img/runningStatus.png'):require('./img/stopStatus.png')}
+									style={{
+										marginRight:25,
+										width:12,
+										height:12,
+										top:-12,
+										left:-34,
+										}} />
+							</View>
+							<View
+								style={{
+									flex:1,
+									borderTopWidth:0.5,
+									borderLeftWidth:0.5,
+									borderBottomWidth:1,
+									borderColor:'#e3e3e3',
+									justifyContent:'center',
+									alignItems:'center',
+								}}>
+								<Image
+									source={require('./img/wikiLogo.png')}
+									style={{
+										width:46,
+										height:46,
+										margin:5,
+									}}
+								/>
+								<Text
+									style={{
+										color:'#6e6d68',
+										fontSize:12,
+										margin:5,
+									}}>Wikiepedia</Text>
+								<Image
+									source={this.state.isWikipediaReachable?require('./img/runningStatus.png'):require('./img/stopStatus.png')}
+									style={{
+										marginRight:25,
+										width:12,
+										height:12,
+										top:-12,
+										left:-34,
+										}} />
+							</View>
+						</View>
+					</View>
+					<View style={{
+						flex:88,
+						flexDirection:'row',
+						justifyContent:'center',
+						alignItems:'center',
+						backgroundColor:'white',
+						}} >
+						<TouchableHighlight onPress={this.refresh} activeOpacity={190}>
+							<View style={{
+								borderLeftWidth:1,
+								borderRightWidth:1,
+								borderColor:'#e3e3e3',
+								width:115,
+								height:20,
+								justifyContent:'center',
+								alignItems:'center',
+							}}>
+							<Text style={{
+								fontFamily:'helvetica',
+								color:'#4f4d4f',
+								fontWeight:'bold',
+							}}>Refresh</Text>
+							</View>
+						</TouchableHighlight>
+					</View>
+				</View>
+			</Image>
 			   );
 	}
 }
